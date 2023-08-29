@@ -1,4 +1,4 @@
-# Proyecto Democracia - Plataforma de Financiamiento para Fiscales de DAO
+# Proyecto Democracia 🕊️ - Plataforma de Financiamiento para Fiscales de DAO
 
 > :warning: **¡Importante!** Este proyecto es una demostración y no debe ser utilizado en entornos de producción. El desarrollador no es responsable del uso que se le dé a este código.
 
