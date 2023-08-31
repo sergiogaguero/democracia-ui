@@ -3,9 +3,27 @@ import Header from "@/components/header.component";
 import styles from './page.module.scss'; // Importa los estilos CSS Modules
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { PREGUNTAS } from "./preguntas.constants";
 
 export default function Profile() {
   const [denuncias, setDenuncias] = useState<any[]>([]);
+
+  const nuevaDenuncia = async () => {
+    /* EJEMPLO DE COMO POSTEAR UNA DENUNCIA */
+    const response = await axios.post('/api/denuncia', {payload: {
+      nroMesa: 1,
+      pregunta1: 'si',
+      pregunta2: 'no',
+      pregunta3: 'si'
+    }
+    });
+  }
+
+  const getOptionDesctiption = (optionId: string, optionNro: number) => {
+    const opciones = PREGUNTAS[optionNro].opciones;
+    const opcionEncontrada = opciones.find((op: any) => op.id == optionId)
+    return opcionEncontrada?.texto
+  }
 
   const getDenunciasFromAxios = async () => {
     const response = await axios.get('/api/denuncia');
@@ -36,13 +54,21 @@ export default function Profile() {
               <p className="mb-3 pt-5 text-5xl text-center font-semibold">
                 Mi Denuncia
               </p>
+              <button className="block w-full text-sm text-slate-500
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded-full file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-violet-50 file:text-violet-700
+                      hover:file:bg-violet-100
+                    " onClick={nuevaDenuncia}> nueva denuncia</button>
+
             </div>
             
           </div>
           <div className="p-10 max-w-4xl mx-auto bg-ct-dark-100 rounded-md  flex justify-center items-center">
               {denuncias && denuncias?.map((denuncia: any)=>{
                 return (
-                  <div>
+                  <div key={denuncia?.id}>
                     <div> 
                       Id de Denuncia: {denuncia?.id} 
                     </div>
@@ -50,13 +76,10 @@ export default function Profile() {
                       Nro de Mesa: {denuncia?.nroMesa}
                     </div>
                     <div> 
-                      Pregunta1: {denuncia?.pregunta1}
+                      {PREGUNTAS[0].pregunta}: {getOptionDesctiption(denuncia?.pregunta1, 0)}
                     </div>
                     <div> 
-                      Pregunta2: {denuncia?.pregunta2}
-                    </div>
-                    <div> 
-                      Pregunta3: {denuncia?.pregunta3}
+                      {PREGUNTAS[1].pregunta}: {getOptionDesctiption(denuncia?.pregunta2, 1)}
                     </div>
                   </div>
                 )
