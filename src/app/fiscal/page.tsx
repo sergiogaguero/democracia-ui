@@ -3,9 +3,25 @@ import Header from "@/components/header.component";
 import styles from './page.module.scss'; // Importa los estilos CSS Modules
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { Colegio, Fiscales } from "@/types/database.types";
 
 export default function Profile() {
-  const [fiscal, setFiscal] = useState<any[]>([]);
+  const [fiscal, setFiscal] = useState<Fiscales[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [colegios, setColegios] = useState<Colegio[]>([]);
+
+  const handleInputChange = async  (event: any) => {
+    const newSearchTerm = event.target.value;
+    setSearchTerm(newSearchTerm);
+
+    try {
+      const response = await axios.get(`/api/colegios?name=${newSearchTerm}`);
+      const colegiosData = response.data.colegios;
+      setColegios(colegiosData);
+    } catch (error) {
+      console.error('Error fetching colegios:', error);
+    }
+  };
 
   const nuevaDenuncia = async () => {
     /* EJEMPLO DE COMO CREAR UN FISCAL */
@@ -50,7 +66,20 @@ export default function Profile() {
               </p>
               <button className="my-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
                   onClick={nuevaDenuncia}> nueva fiscal de prueba</button>
-
+              <div>
+                <input
+                  type="text"
+                  style={{width: '500px', padding: '10px', borderRadius: '5px'} }
+                  placeholder="Escribe el nombre del colegio"
+                  value={searchTerm}
+                  onChange={handleInputChange}
+                />
+                <ul>
+                  {colegios && colegios.map((colegio: Colegio) => (
+                    <li key={colegio?.cueanexo}>{colegio?.name} - {colegio.loc } - {colegio.dom} </li>
+                  ))}
+                </ul>
+              </div>
             </div>
             
           </div>

@@ -74,3 +74,13 @@ export interface Partido {
   desc: string;
   Fiscales: Fiscales[];
 }
+
+export interface Colegio {
+  juri: string;
+  loc: string;
+  codloc: string;
+  cueanexo: string;
+  name: string;
+  dom: string;
+  cp: string;
+}
