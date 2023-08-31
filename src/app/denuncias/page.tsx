@@ -10,12 +10,13 @@ export default function Profile() {
 
   const nuevaDenuncia = async () => {
     /* EJEMPLO DE COMO POSTEAR UNA DENUNCIA */
-    const response = await axios.post('/api/denuncia', {payload: {
-      nroMesa: 1,
-      pregunta1: 'si',
-      pregunta2: 'no',
-      pregunta3: 'si'
-    }
+    const response = await axios.post('/api/denuncia', {
+      payload: {
+        nroMesa: 1,
+        pregunta1: 1,
+        pregunta2: 2,
+        pregunta3: 1
+      }
     });
   }
 
@@ -34,7 +35,6 @@ export default function Profile() {
     const fetchDenuncias = async () => {
       try {
         const denu = await getDenunciasFromAxios();
-        console.log( "denu", denu)
         setDenuncias(denu);
       } catch (error) {
         // Manejar errores
@@ -54,13 +54,8 @@ export default function Profile() {
               <p className="mb-3 pt-5 text-5xl text-center font-semibold">
                 Mi Denuncia
               </p>
-              <button className="block w-full text-sm text-slate-500
-                      file:mr-4 file:py-2 file:px-4
-                      file:rounded-full file:border-0
-                      file:text-sm file:font-semibold
-                      file:bg-violet-50 file:text-violet-700
-                      hover:file:bg-violet-100
-                    " onClick={nuevaDenuncia}> nueva denuncia</button>
+              <button className="my-10 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={nuevaDenuncia}> nueva denuncia de prueba</button>
 
             </div>
             
