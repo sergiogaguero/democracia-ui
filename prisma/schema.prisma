@@ -11,17 +11,19 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String      @id @default(uuid())
   name          String
-  email         String?   @unique
-  wallet        String?   
+  email         String?     @unique
+  wallet        String?
   password      String?
-  emailVerified DateTime? @map("email_verified")
+  emailVerified DateTime?   @map("email_verified")
   image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
   accounts      Account[]
   sessions      Session[]
+  denuncias     Denuncias[]
+  fiscales      Fiscales[]
 
   @@map("users")
 }
@@ -68,4 +70,42 @@ model VerificationRequest {
   updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
+}
+
+model Denuncias {
+  id        String @id @default(cuid())
+  userId    String @map("user_id")
+  nroMesa   Int
+  pregunta1 String
+  pregunta2 String
+  pregunta3 String
+  image     Bytes?
+  user      User   @relation(fields: [userId], references: [id])
+
+  @@unique([userId])
+}
+
+model Fiscales {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  dni               Int
+  idPartido         String
+  foto_dni          Bytes?
+  fiscalizado       Boolean @default(false)
+  foto_poder_fiscal Bytes?
+  foto_selfie_mesa  Bytes?
+  nro_mesa          Int?
+  colegio           String?
+
+  partido Partido @relation(fields: [idPartido], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+}
+
+model Partido {
+  id       String     @id @default(cuid())
+  name     String
+  desc     String
+  Fiscales Fiscales[]
+
+  @@unique([id])
 }
