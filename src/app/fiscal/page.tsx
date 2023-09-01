@@ -9,6 +9,32 @@ export default function Profile() {
   const [fiscal, setFiscal] = useState<Fiscales[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [colegios, setColegios] = useState<Colegio[]>([]);
+  const [image, setImage] = useState(null);
+
+  const handleImageChange = (event: any) => {
+    const selectedImage = event.target.files[0];
+    setImage(selectedImage);
+  };
+
+  const handleImageUpload = async () => {
+    const formData = new FormData();
+    formData.append('image', image);
+
+    try {
+      const response = await fetch('/api/uploadPoderFiscal', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.status === 200) {
+        console.log('Imagen subida con éxito.');
+      } else {
+        console.error('Error al subir la imagen.');
+      }
+    } catch (error) {
+      console.error('Error al realizar la solicitud de subida de imagen:', error);
+    }
+  };
 
   const handleInputChange = async  (event: any) => {
     const newSearchTerm = event.target.value;
@@ -96,6 +122,10 @@ export default function Profile() {
                   </div>
                 )
               })}
+          </div>
+          <div className="p-10 max-w-4xl mx-auto bg-ct-dark-100 rounded-md  flex justify-center items-center">
+            <input type="file" accept="image/*" onChange={handleImageChange} />
+            <button onClick={handleImageUpload}>Subir Imagen</button>
           </div>
         </div>
       </section>
