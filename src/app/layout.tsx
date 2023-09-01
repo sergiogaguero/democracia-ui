@@ -1,5 +1,9 @@
+"use client"
+
+import customTheme from "@/theme/theme";
 import "./globals.css";
 import { NextAuthProvider } from "./providers";
+import { ChakraProvider } from '@chakra-ui/react'
 
 export const metadata = {
   title: "Create Next App",
@@ -14,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NextAuthProvider>{children}</NextAuthProvider>
+        <ChakraProvider theme={customTheme}>
+          <NextAuthProvider>{children}</NextAuthProvider>
+        </ChakraProvider>
       </body>
     </html>
   );
